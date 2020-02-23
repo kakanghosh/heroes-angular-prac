@@ -1,0 +1,22 @@
+button.simple-button {
+	font-family: Arial;
+	background-color: #eee;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	cursor: hand;
+	margin: 5px;
+}
+button:hover {
+	background-color: #cfd8dc;
+}
+button:disabled {
+	background-color: #eee;
+	color: #aaa;
+	cursor: auto;
+}
+button.simple-button {
+	color: #333;
+	margin-bottom: 12px;
+}
