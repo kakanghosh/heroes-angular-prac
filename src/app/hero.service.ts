@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Hero } from './hero';
-import {Observable, of} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
 import { catchError, filter, tap, map } from 'rxjs/operators';
 
@@ -9,38 +9,44 @@ import { catchError, filter, tap, map } from 'rxjs/operators';
 	providedIn: 'root'
 })
 export class HeroService {
-
 	private heroesUrl = 'api/heroes';
 
 	private httpOptions: object;
 
-	constructor(private httpClient:HttpClient, private messageService: MessageService) {
+	constructor(
+		private httpClient: HttpClient,
+		private messageService: MessageService
+	) {
 		console.log('HeroService');
 		this.httpOptions = {
 			headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 		};
 
-		of(1, 2, 3, 4).pipe(
-			tap(el => console.log('Process '+ el),
-				err => console.error(err),
-				() => console.log('Complete')
-			),
-			filter(n => n % 2 === 0)
-		).subscribe(el => console.log('Even number: '+ el));
+		of(1, 2, 3, 4)
+			.pipe(
+				tap(
+					el => console.log('Process ' + el),
+					err => console.error(err),
+					() => console.log('Complete')
+				),
+				filter(n => n % 2 === 0)
+			)
+			.subscribe(el => console.log('Even number: ' + el));
 
-		let cities = ["Varanasi", "Mathura", "Ayodhya"];
-      	of(cities).pipe(
-        	tap(c => console.log(c.length)),
-        	map(dataArray => dataArray.join(", "))
-     	).subscribe(res => console.log(res));
+		const cities = ['Varanasi', 'Mathura', 'Ayodhya'];
+		of(cities)
+			.pipe(
+				tap(c => console.log(c.length)),
+				map(dataArray => dataArray.join(', '))
+			)
+			.subscribe(res => console.log(res));
 	}
 
 	getHeroes(): Observable<Hero[]> {
-		return this.httpClient.get<Hero[]>(this.heroesUrl)
-			.pipe(
-				tap(_ => this.log('HeroService: fetched heroes')),
-				catchError(this.handleError('getHeroes', []))
-			);
+		return this.httpClient.get<Hero[]>(this.heroesUrl).pipe(
+			tap(_ => this.log('HeroService: fetched heroes')),
+			catchError(this.handleError('getHeroes', []))
+		);
 	}
 
 	/** GET hero by id. Will 404 if id not found */
@@ -53,7 +59,7 @@ export class HeroService {
 	}
 
 	/** PUT: update the hero on the server */
-	updateHero (hero: Hero): Observable<any> {
+	updateHero(hero: Hero): Observable<any> {
 		return this.httpClient.put(this.heroesUrl, hero, this.httpOptions).pipe(
 			tap(_ => this.log(`updated hero id=${hero.id}`)),
 			catchError(this.handleError<any>('updateHero'))
@@ -61,16 +67,18 @@ export class HeroService {
 	}
 
 	addHero(hero: Hero): Observable<Hero> {
-		return this.httpClient.post(this.heroesUrl, hero, this.httpOptions).pipe(
-			tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
-			catchError(this.handleError<any>('added hero'))
-		);
+		return this.httpClient
+			.post(this.heroesUrl, hero, this.httpOptions)
+			.pipe(
+				tap((newHero: Hero) =>
+					this.log(`added hero w/ id=${newHero.id}`)
+				),
+				catchError(this.handleError<any>('added hero'))
+			);
 	}
 
-
-	private handleError<T> (operation = 'operation', result?: T) {
+	private handleError<T>(operation = 'operation', result?: T) {
 		return (error: any): Observable<T> => {
-
 			// TODO: send the error to remote logging infrastructure
 			console.error(error); // log to console instead
 
@@ -101,12 +109,16 @@ export class HeroService {
 		if (!term.trim()) {
 			// if not search term, return empty hero array.
 			return of([]);
-		  }
-		  return this.httpClient.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-			tap(x => x.length ?
-			   this.log(`found heroes matching "${term}"`) :
-			   this.log(`no heroes matching "${term}"`)),
-			catchError(this.handleError<Hero[]>('searchHeroes', []))
-		  );
+		}
+		return this.httpClient
+			.get<Hero[]>(`${this.heroesUrl}/?name=${term}`)
+			.pipe(
+				tap(x =>
+					x.length
+						? this.log(`found heroes matching "${term}"`)
+						: this.log(`no heroes matching "${term}"`)
+				),
+				catchError(this.handleError<Hero[]>('searchHeroes', []))
+			);
 	}
 }

@@ -15,14 +15,26 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 
 @NgModule({
-    declarations: [AppComponent, HeroesComponent,
-		HeroDetailComponent, MessagesComponent,
-		DashboardComponent, AppButtonComponent, HeroSearchComponent],
-    imports: [
-    	BrowserModule, AppRoutingModule,
-		FormsModule, HttpClientModule,
-		HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false, delay: 200})],
-    providers: [],
-    bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		HeroesComponent,
+		HeroDetailComponent,
+		MessagesComponent,
+		DashboardComponent,
+		AppButtonComponent,
+		HeroSearchComponent
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		FormsModule,
+		HttpClientModule,
+		HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+			dataEncapsulation: false,
+			delay: 200
+		})
+	],
+	providers: [],
+	bootstrap: [AppComponent]
 })
 export class AppModule {}
